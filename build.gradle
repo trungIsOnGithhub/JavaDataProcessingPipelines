@@ -30,8 +30,10 @@ dependencies {
     testCompile "junit:junit:4.11"
 }
 */
-
 apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'provided-base'
 
 // name='CascadingETLFramework'
 group='com.trung'
@@ -41,13 +43,22 @@ buildDir = 'target'
 ext.hadoopVersion = '2.10.2'
 ext.cascadingVersion = '3.1.0'
 
+buildscript {
+    repositories {
+        maven { url "https://repo1.maven.org/maven2" }
+    }
+    dependencies {
+        classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:2.2.1'
+    }
+}
+
 sourceSets {
     main.java.srcDir "src/main/etlpipelines"
 }
 
 jar {
     description = "Hadoop-ready jar file for ETL pipelines."
-    baseName 'pipeline.jar'
+    baseName 'pipeline'
 
     doFirst {
         into( "lib") {
@@ -56,7 +67,11 @@ jar {
     }
 
     manifest {
-        attributes("Main-Class": "mainetlpipelines.Main")
+        attributes("Main-Class": "etlpipelines.Main")
+    }
+
+    doLast {
+        println '>>>' + project.configurations.compile.dependencies
     }
 }
 
