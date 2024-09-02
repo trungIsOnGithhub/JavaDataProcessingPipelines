@@ -32,15 +32,28 @@ class NullChecker {
 	}
 }
 
+class PropertiesGenerator {
+	public static Properties getApplicationConfigured() {
+    	Properties properties = new Properties();
+
+		AppProps.setApplicationJarClass(properties, Main.class);
+		AppProps.setApplicationName(properties, "Data Pipelines with Cascading Java");
+		AppProps.addApplicationTag(properties, "data-engineering");
+		AppProps.addApplicationTag(properties, "java-programming");
+
+		return properties;
+	}
+}
 // public interface FileETLPipeline {
 
 // }
 
 public class Main {
 	public static void main(String[] args) {
-		String[] argsChecked = NullChecker.check(args, 2);
+		String[] argsChecked = NullChecker.check(args, 4);
 
-		String inFilePath = args[0], outFilePath = args[1];
+		String documentPath = args[0], countPath = args[1];
+		String stopWordPath = args[2], resultPath = args[3];
 
 		// var tsvData = 
 
@@ -51,12 +64,8 @@ public class Main {
 
 		FlowDef flowDefine = FlowDef.flowDef().setName("File Copier").addSource(copyPipe, sourceTap).addTailSink(copyPipe, destTap);
 
-		Properties properties = new Properties();
-		AppProps.setApplicationJarClass(properties, Main.class);
-		AppProps.setApplicationName(properties, "ETLPipeline");
-		AppProps.addApplicationTag(properties, "technology:CascadingHadoop");
-
-		Hadoop2MR1FlowConnector flowConnector = new Hadoop2MR1FlowConnector(properties);
+		Properties properties = PropertiesGenerator.getApplicationConfigured();
+		FlowConnector flowConnector = new Hadoop2MR1FlowConnector(properties);
 
 		flowConnector.connect(flowDefine).complete();
 	}
