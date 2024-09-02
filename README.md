@@ -2,6 +2,28 @@
 
 ## Overview
 - Text Mining with TF-IDF in MapReduce implmentation, using Cascading library in Java.
+- TF-IDF calculates a metric for each token indicating how **important** that token is to a document within a collection of documents.
+- Tokens which appear in most documents tend to have very low TF-IDF weights.
+- On the other hand, tokens which less common but appear multiple times in a few documents tend to have very high TF-IDF weights.
+- Play an important role in the TF-IDF algorithm  drive the indexing in some text search engines
+- TF-IDF is calculated based on:
+1. term count in a given document
+2. document frequency how appears across all documents
+3. number of terms: total number of terms in a given document
+4. document count: total number of documents
+
+
+## Scrubing Operation for Data Stream
+- In my example, I handled the data from a file in a stream to process data with lower memory usage.
+- Scrubbing operation, as the data is in form of stream, is placed in the pipe to usually clean up the token stream for the whole pipeline.
+![word_count](/assets/wc-with-scrub-pipeline.png)
+*Image from [Cascading documentation]('http://docs.cascading.org')*
+
+## Opertaion in Building Pipelines
+1. ```SumBy```
+2. ```CoGroup```
+3. ```ExpressionFunction```
+4. ```Each```
 
 ## Some Details about Cascading
 - Cascading offer a core notion of **WorkFlow**. For a typical *MapReduce job* with **mapper** and **reducer**, Cascading let us focus on the whole application, developing application as a *DAG(Directed Acyclic Graph) of MapReduce job steps*.
